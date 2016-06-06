@@ -19,7 +19,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"mitrm\\links\\": ""
+			"mitrm\\images\\": ""
 		}
 	},
 	"extra": {
