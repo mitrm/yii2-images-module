@@ -9,6 +9,22 @@ use yii\base\InvalidConfigException;
  */
 class Module extends \yii\base\Module
 {
+    public $base_dir = false;
+    public $base_path = false;
+
+    public $image_driver = 'Imagick';
+
+    /**
+     * @brief Расрешенные размеры при изменении размера
+     * @var array
+     */
+    public static $allow_size = [
+        50,
+        100,
+        500,
+        1000,
+    ];
+
     public $is_backend = true;
 
     public $domain = false;
@@ -18,8 +34,8 @@ class Module extends \yii\base\Module
      */
     public function init()
     {
-        if(!$this->domain) {
-            throw new InvalidConfigException('Не указан домен');
+        if(!$this->domain || !$this->base_path || !$this->base_dir) {
+            throw new InvalidConfigException('Не указанs обязательные параметры');
         }
         if ($this->is_backend === true) {
             $this->setViewPath('@mitrm/images/views/backend');
