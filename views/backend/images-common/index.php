@@ -30,13 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Изображение',
                 'format' => 'html',
                 'value' => function($model){
-                    return Html::img($model->getImage(100));
+                    return  Html::a(Html::img($model->getImage(100)), 'http://'.Yii::$app->getModule('mitrm_images')->domain.$model->getImgOrigin());
                 }
 
             ],
-            'path',
-            'hash',
-            'name',
+//            'path',
+//            'hash',
+//            'name',
             // 'exp',
             'is_active:boolean',
             'created_at:dateTime',

@@ -87,6 +87,19 @@ class ImagesCommon extends \yii\db\ActiveRecord
         ];
     }
 
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        if(!empty($this->name)) {
+            $dir = $this->getPathImg() . DIRECTORY_SEPARATOR . $this->path . DIRECTORY_SEPARATOR;
+            $mack = $dir.$this->name.'*';
+            $mack = glob($mack);
+            if(is_array($mack)) {
+                array_map("unlink", $mack);
+            }
+        }
+    }
+
 
 
     /**
@@ -96,8 +109,10 @@ class ImagesCommon extends \yii\db\ActiveRecord
      */
     public function getImgOrigin()
     {
-        return $file = Module::$base_dir.'/'.$this->name.'.'.$this->exp;
+        return $file = Yii::$app->getModule('mitrm_images')->base_dir . DIRECTORY_SEPARATOR . $this->path . DIRECTORY_SEPARATOR
+            . $this->name.$this->exp;
     }
+
 
 
     /**
@@ -108,7 +123,7 @@ class ImagesCommon extends \yii\db\ActiveRecord
      */
     public function getImage($size=500)
     {
-        if(!in_array($size, Module::$allow_size)) {
+        if(!in_array($size, Yii::$app->getModule('mitrm_images')->allow_size)) {
             throw new InvalidParamException('Не верный размер');
         }
         return self::getImg($this->path, $this->name, $this->exp, $size);
@@ -124,7 +139,7 @@ class ImagesCommon extends \yii\db\ActiveRecord
      */
     public static function getImg($path, $img, $exp, $size=500)
     {
-        $dir = Yii::$app->getModule('images')->base_dir . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR;
+        $dir = Yii::$app->getModule('mitrm_images')->base_dir . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR;
         $path = self::getPathImg() . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR;
         $image = $dir . $img.'_'.$size.'x'.$size.$exp;
         $image_path = $path . $img.'_'.$size.'x'.$size.$exp;
@@ -138,7 +153,7 @@ class ImagesCommon extends \yii\db\ActiveRecord
 
             $file_new = $path . $img.'_'.$size.'x'.$size.$exp;
 
-            $imageTmp = Image::factory($file, Yii::$app->getModule('images')->image_driver);
+            $imageTmp = Image::factory($file, Yii::$app->getModule('mitrm_images')->image_driver);
             $imageTmp->resize($size,$size);
             $imageTmp->save($file_new, 100);
 
@@ -155,7 +170,7 @@ class ImagesCommon extends \yii\db\ActiveRecord
      */
     public static function getPathImg()
     {
-        $filePath = Yii::$app->getModule('images')->base_path;
+        $filePath = Yii::$app->getModule('mitrm_images')->base_path;
         return Yii::getAlias($filePath);
     }
 

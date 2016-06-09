@@ -14,11 +14,12 @@ class Module extends \yii\base\Module
 
     public $image_driver = 'Imagick';
 
+
     /**
      * @brief Расрешенные размеры при изменении размера
      * @var array
      */
-    public static $allow_size = [
+    public $allow_size = [
         50,
         100,
         500,
