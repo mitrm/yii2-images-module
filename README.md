@@ -1,5 +1,5 @@
-Yii2 images , загружка отображение изображений
-=====================
+Yii2 images , загрузка, отображение изображений
+===============================================
 
 
 ## Install
@@ -28,3 +28,12 @@ In config file:
 ```
 
 ## Usage
+```
+<?= \mitrm\images\widgets\ImagesUploadWidget::widget([
+    'toggleButton' => [
+        'label' => 'Загрузить',
+        'tag' => 'a'
+    ]
+])?>
+
+```
